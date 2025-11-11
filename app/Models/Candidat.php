@@ -18,7 +18,7 @@ class Candidat extends Model
     ];
 
     
-     public function tasks(): HasMany//un projet peu avoir plusieur tâches//
+     public function candidat(): HasMany//un projet peu avoir plusieur tâches//
     {
         return $this->hasMany(Task::class);
     }

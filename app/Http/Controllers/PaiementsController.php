@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class PaiementsController extends Controller
 {
-
+  
     public function doVote(Request $request)
     {
         // Validation des données de la requête

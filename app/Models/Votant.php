@@ -15,7 +15,7 @@ class Votant extends Model
         "number",
     ];
 
-     public function tasks(): HasMany//un projet peu avoir plusieur tâches//
+     public function votant(): HasMany//un projet peu avoir plusieur tâches//
     {
         return $this->hasMany(Task::class);
     }

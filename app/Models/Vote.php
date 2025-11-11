@@ -16,7 +16,7 @@ class Vote extends Model
        "statuts",
     ];
 
-     public function tasks(): HasMany//un projet peu avoir plusieur tâches//
+     public function vote(): HasMany//un projet peu avoir plusieur tâches//
     {
         return $this->hasMany(Task::class);
     }

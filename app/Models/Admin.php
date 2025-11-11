@@ -23,7 +23,7 @@ class Admin extends Model
     ];
 
     
-     public function tasks(): HasMany//un projet peu avoir plusieur tâches//
+     public function admin(): HasMany//un projet peu avoir plusieur tâches//
     {
         return $this->hasMany(Task::class);
     }
