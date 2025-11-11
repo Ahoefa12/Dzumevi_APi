@@ -28,18 +28,7 @@ class PaiementsController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $data = $request->validate([
-               
-            ]);
-            return response()->json([
-                
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                
-            ], 400);
-        }
+        
     }
 
     /**
@@ -47,16 +36,7 @@ class PaiementsController extends Controller
      */
     public function show(string $id)
     {
-        try {
-           
-            return response()->json([
-                
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                
-            ], 400);
-        }
+       
     }
 
     /**
@@ -72,19 +52,7 @@ class PaiementsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-         try {
-            $data = $request->validate([
-               
-            ]);
-           
-            return response()->json([
-                
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                
-            ], 400);
-        }
+        
     }
 
     /**
@@ -92,15 +60,6 @@ class PaiementsController extends Controller
      */
     public function destroy(string $id)
     {
-        try {
-           
-            return response()->json([
-                
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                
-            ], 400);
-        }
+        
     }
 }
