@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Candidat;
@@ -7,100 +6,110 @@ use Illuminate\Http\Request;
 
 class CandidatsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return Candidat::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Liste des candidats récupérée avec succès',
+            'data' => Candidat::all()
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try {
             $data = $request->validate([
-               
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
+                'maticule' => 'required|string|unique:candidats',
+                'description' => 'nullable|string',
+                'categorie' => 'required|string',
+                'photo' => 'nullable|string' // ou 'image' si tu gères l'upload
             ]);
-           $candidat = Candidat::create($data);
+
+            $candidat = Candidat::create($data);
+
             return response()->json([
-                
-            ], 200);
+                'status' => 'success',
+                'message' => 'Candidat enregistré avec succès',
+                'data' => $candidat
+            ], 201);
+
         } catch (\Throwable $th) {
             return response()->json([
-                
+                'status' => 'error',
+                'message' => 'Erreur lors de l\'enregistrement du candidat',
+                'error' => $th->getMessage()
             ], 400);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-          try {
-            Candidat::findOrFail($id)->delete();
+        try {
+            $candidat = Candidat::findOrFail($id);
+
             return response()->json([
-                
+                'status' => 'success',
+                'message' => 'Candidat trouvé',
+                'data' => $candidat
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json([
-                
-            ], 400);
+                'status' => 'error',
+                'message' => 'Candidat introuvable',
+                'error' => $th->getMessage()
+            ], 404);
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-         try {
+        try {
             $data = $request->validate([
-               
+                'firstname' => 'sometimes|string',
+                'lastname' => 'sometimes|string',
+                'maticule' => 'sometimes|string|unique:candidats,maticule,' . $id,
+                'description' => 'nullable|string',
+                'categorie' => 'sometimes|string',
+                'photo' => 'nullable|string'
             ]);
-            $candidat = Candidat::create($data);
+
+            $candidat = Candidat::findOrFail($id);
+            $candidat->update($data);
+
             return response()->json([
-                
+                'status' => 'success',
+                'message' => 'Candidat mis à jour avec succès',
+                'data' => $candidat
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json([
-                
+                'status' => 'error',
+                'message' => 'Erreur lors de la mise à jour du candidat',
+                'error' => $th->getMessage()
             ], 400);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-         try {
-            Candidat::findOrFail($id)->delete();
-            return response()->json([
+        try {
+            $candidat = Candidat::findOrFail($id);
+            $candidat->delete();
 
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Candidat supprimé avec succès'
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json([
-                
+                'status' => 'error',
+                'message' => 'Erreur lors de la suppression du candidat',
+                'error' => $th->getMessage()
             ], 400);
         }
     }

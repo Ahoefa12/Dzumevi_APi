@@ -7,59 +7,109 @@ use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return Vote::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Liste des votes récupérée avec succès',
+            'data' => Vote::all()
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->validate([
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
+                'date' => 'required|date',
+                'echeance' => 'required|date',
+                'statuts' => 'required|string'
+            ]);
+
+            $vote = Vote::create($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vote enregistré avec succès',
+                'data' => $vote
+            ], 201);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erreur lors de l\'enregistrement du vote',
+                'error' => $th->getMessage()
+            ], 400);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        try {
+            $vote = Vote::findOrFail($id);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vote trouvé',
+                'data' => $vote
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Vote introuvable',
+                'error' => $th->getMessage()
+            ], 404);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $data = $request->validate([
+                'firstname' => 'sometimes|string',
+                'lastname' => 'sometimes|string',
+                'date' => 'sometimes|date',
+                'echeance' => 'sometimes|date',
+                'statuts' => 'sometimes|string'
+            ]);
+
+            $vote = Vote::findOrFail($id);
+            $vote->update($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vote mis à jour avec succès',
+                'data' => $vote
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erreur lors de la mise à jour du vote',
+                'error' => $th->getMessage()
+            ], 400);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        try {
+            $vote = Vote::findOrFail($id);
+            $vote->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Vote supprimé avec succès'
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erreur lors de la suppression du vote',
+                'error' => $th->getMessage()
+            ], 400);
+        }
     }
 }
