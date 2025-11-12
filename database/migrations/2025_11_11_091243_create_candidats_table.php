@@ -18,6 +18,7 @@ return new class extends Migration
     $table->string('description', 355)->nullable();
     $table->enum('categorie', ['Homme', 'Femme', 'Autre']);
     $table->string('photo')->nullable();
+    $table->foreignId('vote_id')->constrained('votes')->onDelete('cascade');
     $table->timestamps();
    });
 
