@@ -9,15 +9,22 @@ use App\Http\Controllers\AuthController;
 
 
 // Authentification
-Route::post('/login', [AuthController::class, 'login']); // C'est pour juste la connexion comme Paul l'a démandé
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::apiResource('candidats', CandidatsController::class);
-Route::apiResource('paiements', PaiementsController::class);
-Route::apiResource('votes', VoteController::class);
 
+route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('candidats', CandidatsController::class)->except(['index', 'show']);
+    Route::apiResource('votes', VoteController::class)->except(['index', 'show']);
+});
+
+
+Route::Post('paiement', [PaiementsController::class, 'doVote']);
+Route::get('candidats', [CandidatsController::class, 'index']);
+Route::get('candidats/{id}', [CandidatsController::class, 'show']);
+Route::get('votes', [VoteController::class, 'index']);
+Route::get('votes/{id}', [VoteController::class, 'show']);
 
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
-
