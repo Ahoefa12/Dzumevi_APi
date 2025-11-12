@@ -15,7 +15,6 @@ return new class extends Migration
     $table->id();
     $table->string('nom');
     $table->string('prenoms')->nullable();
-    $table->string('matricule')->unique();
     $table->string('description_short', 355)->nullable();
     $table->enum('categorie', ['Homme', 'Femme', 'Autre']);
     $table->string('photo')->nullable();
