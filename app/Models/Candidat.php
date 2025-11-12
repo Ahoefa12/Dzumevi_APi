@@ -10,6 +10,7 @@ class Candidat extends Model
 {
     protected $fillable = [
         "firstname",
+        'matricule',
         "lastname",
         "description",
         "categorie",

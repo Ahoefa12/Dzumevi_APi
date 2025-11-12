@@ -13,9 +13,31 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::factory()->create([
-            'name' => 'BienvenuAdmin',
-            'email' => '123456',
-        ]);
+        $admins = [
+            [
+                'name' => 'BienvenuAdmin',
+                'password' => Hash::make('123456'), // Hash du mot de passe
+            ],
+            [
+                'name' => 'MecodeAdmin',
+                'password' => Hash::make('123456'),
+            ],
+            [
+                'name' => 'DianeAdmin',
+                'password' => Hash::make('123456'),
+            ],
+            [
+                'name' => 'MariolAdmin',
+                'password' => Hash::make('123456'),
+            ],
+            [
+                'name' => 'AmiirAdmin',
+                'password' => Hash::make('123456'),
+            ],
+        ];
+
+        foreach ($admins as $admin) {
+            Admin::create($admin);
+        }
     }
 }
