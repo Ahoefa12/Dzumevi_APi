@@ -11,15 +11,14 @@ class Candidat extends Model
     protected $fillable = [
         "firstname",
         "lastname",
-        "maticule",
         "description",
         "categorie",
         "photo",
     ];
 
     
-     public function candidat(): HasMany//un projet peu avoir plusieur tâches//
+     public function candidat(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Vote::class);
     }
 }

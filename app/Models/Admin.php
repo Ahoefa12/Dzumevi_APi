@@ -12,10 +12,4 @@ class Admin extends Model
         "name",
         "password",
     ];
-
-    
-     public function admin(): HasMany//un projet peu avoir plusieur tâches//
-    {
-        return $this->hasMany(Task::class);
-    }
 }
