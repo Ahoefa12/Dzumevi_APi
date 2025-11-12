@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('candidats', function (Blueprint $table) {
     $table->id();
-    $table->string('nom');
-    $table->string('prenoms')->nullable();
+    $table->string('firstname');
     $table->string('matricule')->unique();
-    $table->string('description_short', 355)->nullable();
+    $table->string('description', 355)->nullable();
     $table->enum('categorie', ['Homme', 'Femme', 'Autre']);
     $table->string('photo')->nullable();
     $table->timestamps();

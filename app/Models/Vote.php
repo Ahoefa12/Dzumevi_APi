@@ -9,15 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Vote extends Model
 {
     protected $fillable = [
-       "firstname",
-       "lastname",
+       "name",
        "date",
        "echeance",
        "statuts",
     ];
 
-     public function vote(): HasMany//un projet peu avoir plusieur tâches//
+     public function vote(): HasMany//un vote peut avoir plusieur //
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Vote::class);
     }
 }
