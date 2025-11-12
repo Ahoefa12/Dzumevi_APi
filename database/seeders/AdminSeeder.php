@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     {
         Admin::factory()->create([
             'name' => 'BienvenuAdmin',
-            'email' => '123456',
+            'password' => '123456',
         ]);
     }
 }
