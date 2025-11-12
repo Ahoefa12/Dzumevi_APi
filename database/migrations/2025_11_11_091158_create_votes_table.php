@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vote', function (Blueprint $table) {
+        Schema::create('votes', function (Blueprint $table) {
     $table->id();
-    $table->string('nom');
+    $table->string('name');
     $table->date('date');
     $table->date('echeance')->nullable();
-    $table->enum('statut', ['en_cours', 'termine', 'annule']);
+    $table->enum('statuts', ['en_cours', 'termine', 'annule']);
     $table->timestamps();
 });
 

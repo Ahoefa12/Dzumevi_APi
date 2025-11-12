@@ -12,7 +12,7 @@ class VoteController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Liste des votes récupérée avec succès',
-            'data' => Vote::all()
+            'data' => Vote::all(),
         ], 200);
     }
 
@@ -20,11 +20,10 @@ class VoteController extends Controller
     {
         try {
             $data = $request->validate([
-                'firstname' => 'required|string',
-                'lastname' => 'required|string',
+                'name' => 'required|string',
                 'date' => 'required|date',
                 'echeance' => 'required|date',
-                'statuts' => 'required|string'
+                'statuts' => 'required|string',
             ]);
 
             $vote = Vote::create($data);
@@ -32,14 +31,14 @@ class VoteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Vote enregistré avec succès',
-                'data' => $vote
+                'data' => $vote,
             ], 201);
 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Erreur lors de l\'enregistrement du vote',
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ], 400);
         }
     }
@@ -52,14 +51,14 @@ class VoteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Vote trouvé',
-                'data' => $vote
+                'data' => $vote,
             ], 200);
 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Vote introuvable',
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ], 404);
         }
     }
@@ -68,11 +67,10 @@ class VoteController extends Controller
     {
         try {
             $data = $request->validate([
-                'firstname' => 'sometimes|string',
-                'lastname' => 'sometimes|string',
+                'name' => 'sometimes|string',
                 'date' => 'sometimes|date',
                 'echeance' => 'sometimes|date',
-                'statuts' => 'sometimes|string'
+                'statuts' => 'sometimes|string',
             ]);
 
             $vote = Vote::findOrFail($id);
@@ -81,14 +79,14 @@ class VoteController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Vote mis à jour avec succès',
-                'data' => $vote
+                'data' => $vote,
             ], 200);
 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Erreur lors de la mise à jour du vote',
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ], 400);
         }
     }
@@ -101,14 +99,14 @@ class VoteController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Vote supprimé avec succès'
+                'message' => 'Vote supprimé avec succès',
             ], 200);
 
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Erreur lors de la suppression du vote',
-                'error' => $th->getMessage()
+                'error' => $th->getMessage(),
             ], 400);
         }
     }
