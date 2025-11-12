@@ -11,15 +11,6 @@ class Admin extends Model
     protected $fillable = [
         "name",
         "password",
-        "seConnecter",
-        "creerConcours",
-        "gereConcours",
-        "creerCandidat",
-        "gererCandidat",
-        "suivreVotes",
-        "suivreTransactions",
-        "exporteResultat",
-        "cloturerConcours",
     ];
 
     
