@@ -18,6 +18,6 @@ class Vote extends Model
 
      public function vote(): HasMany//un projet peu avoir plusieur tâches//
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Candidat::class);
     }
 }
