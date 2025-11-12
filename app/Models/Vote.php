@@ -17,6 +17,6 @@ class Vote extends Model
 
      public function vote(): HasMany//un vote peut avoir plusieur //
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Candidat::class);
     }
 }

@@ -5,14 +5,26 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CandidatsController;
 use App\Http\Controllers\PaiementsController;
 use App\Http\Controllers\VoteController;
+use App\Http\Controllers\AuthController;
 
-Route::apiResource('candidats', CandidatsController::class);
-Route::apiResource('paiements', PaiementsController::class);
-Route::apiResource('votes', VoteController::class);
 
+// Authentification
+Route::post('/login', [AuthController::class, 'login']);
+
+
+route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('candidats', CandidatsController::class)->except(['index', 'show']);
+    Route::apiResource('votes', VoteController::class)->except(['index', 'show']);
+});
+
+
+Route::Post('paiement', [PaiementsController::class, 'doVote']);
+Route::get('candidats', [CandidatsController::class, 'index']);
+Route::get('candidats/{id}', [CandidatsController::class, 'show']);
+Route::get('votes', [VoteController::class, 'index']);
+Route::get('votes/{id}', [VoteController::class, 'show']);
 
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
-
