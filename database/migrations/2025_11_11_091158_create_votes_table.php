@@ -13,13 +13,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('votes', function (Blueprint $table) {
-            $table->id();
+           $table->id();
             $table->string('name');
             $table->date('date');
             $table->date('echeance')->nullable();
             $table->enum('statuts', VoteStatus::values());
             $table->timestamps();
-        });
+        }); 
 
     }
 
