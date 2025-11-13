@@ -20,7 +20,7 @@ class CandidatsController extends Controller
         try {
             $data = $request->validate([
                 'firstname' => 'required|string',
-                'matricule' => 'required|string|unique:candidats',
+                'maticule' => 'required|string|unique:candidats',
                 'description' => 'nullable|string',
                 'categorie' => 'required|string',
                 'photo' => 'nullable|string' // ou 'image' si tu gères l'upload
@@ -29,14 +29,14 @@ class CandidatsController extends Controller
             $candidat = Candidat::create($data);
 
             return response()->json([
-                'status' => 'success',
+                'success' => true,
                 'message' => 'Candidat enregistré avec succès',
-                'data' => $candidat
+                'data' => $candidat,
             ], 201);
 
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
+                'success' => false,
                 'message' => 'Erreur lors de l\'enregistrement du candidat',
                 'error' => $th->getMessage()
             ], 400);
