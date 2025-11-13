@@ -16,7 +16,7 @@ return new class extends Migration
     $table->string('name');
     $table->date('date');
     $table->date('echeance')->nullable();
-    $table->enum('statuts', ['en_cours', 'termine', 'annule']);
+    $table->enum('statuts', ['En cours', 'Expiré', 'A venir']);
     $table->timestamps();
 });
 
