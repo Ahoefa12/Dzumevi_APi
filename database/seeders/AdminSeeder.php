@@ -27,7 +27,7 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make('123456'),
             ],
             [
-                'name' => 'MariolAdmin',
+                'name' => 'MarioAdmin',
                 'password' => Hash::make('123456'),
             ],
             [
