@@ -23,7 +23,8 @@ class CandidatsController extends Controller
                 'maticule' => 'required|string|unique:candidats',
                 'description' => 'nullable|string',
                 'categorie' => 'required|string',
-                'photo' => 'nullable|string' // ou 'image' si tu gères l'upload
+                'photo' => 'nullable|string', // ou 'image' si tu gères l'upload
+                "vote_id" => 'required|exists:votes,id'
             ]);
 
             $candidat = Candidat::create($data);
@@ -111,5 +112,16 @@ class CandidatsController extends Controller
                 'error' => $th->getMessage()
             ], 400);
         }
+    }
+
+
+    public function candidatsByVote(string $id)
+    {
+        $candidats = Candidat::where('vote_id', $id)->get();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Liste des candidats récupérée avec succès',
+            'data' => $candidats
+        ], 200);
     }
 }

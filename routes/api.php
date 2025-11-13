@@ -23,6 +23,7 @@ Route::get('candidats', [CandidatsController::class, 'index']);
 Route::get('candidats/{id}', [CandidatsController::class, 'show']);
 Route::get('votes', [VoteController::class, 'index']);
 Route::get('votes/{id}', [VoteController::class, 'show']);
+Route::get('votes/{id}/candidats', [CandidatsController::class, 'candidatsByVote']);
 
 
 // Route::get('/user', function (Request $request) {

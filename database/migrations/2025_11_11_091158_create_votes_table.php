@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\VoteStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +13,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('votes', function (Blueprint $table) {
-    $table->id();
-    $table->string('name');
-    $table->date('date');
-    $table->date('echeance')->nullable();
-    $table->enum('statuts', ['En cours', 'Expiré', 'A venir']);
-    $table->timestamps();
-});
+           $table->id();
+            $table->string('name');
+            $table->date('date');
+            $table->date('echeance')->nullable();
+            $table->enum('statuts', VoteStatus::values());
+            $table->timestamps();
+        }); 
 
     }
 

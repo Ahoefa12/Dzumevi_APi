@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Vote;
 use Illuminate\Http\Request;
+use App\Enums\VoteStatus;
+use Illuminate\Validation\Rule;
 
 class VoteController extends Controller
 {
@@ -23,7 +25,7 @@ class VoteController extends Controller
                 'name' => 'required|string',
                 'date' => 'required|date',
                 'echeance' => 'required|date',
-                'statuts' => 'required|string',
+                'statuts' => ['required', Rule::in(VoteStatus::values())],
             ]);
 
             $vote = Vote::create($data);
@@ -70,7 +72,7 @@ class VoteController extends Controller
                 'name' => 'sometimes|string',
                 'date' => 'sometimes|date',
                 'echeance' => 'sometimes|date',
-                'statuts' => 'sometimes|string',
+                'statuts' => ['sometimes', Rule::in(VoteStatus::values())],
             ]);
 
             $vote = Vote::findOrFail($id);
