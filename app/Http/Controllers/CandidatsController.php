@@ -20,7 +20,7 @@ class CandidatsController extends Controller
         try {
             $data = $request->validate([
                 'firstname' => 'required|string',
-                'maticule' => 'required|string|unique:candidats',
+                'matricule' => 'required|string|unique:candidats',
                 'description' => 'nullable|string',
                 'categorie' => 'required|string',
                 'photo' => 'nullable|string' // ou 'image' si tu gères l'upload
