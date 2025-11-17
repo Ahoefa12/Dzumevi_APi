@@ -31,13 +31,14 @@ class VoteController extends Controller
             $vote = Vote::create($data);
 
             return response()->json([
-                'status' => 'success',
+                'success' => true,
                 'message' => 'Vote enregistré avec succès',
                 'data' => $vote,
             ], 201);
 
         } catch (\Throwable $th) {
             return response()->json([
+                "success" => false,
                 'status' => 'error',
                 'message' => 'Erreur lors de l\'enregistrement du vote',
                 'error' => $th->getMessage(),
