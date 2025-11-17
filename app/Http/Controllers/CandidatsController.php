@@ -9,7 +9,7 @@ class CandidatsController extends Controller
     public function index()
     {
         return response()->json([
-            'status' => 'success',
+            'success' => true,
             'message' => 'Liste des candidats récupérée avec succès',
             'data' => Candidat::all()
         ], 200);

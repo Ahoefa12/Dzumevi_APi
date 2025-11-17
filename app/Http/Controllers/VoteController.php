@@ -12,7 +12,7 @@ class VoteController extends Controller
     public function index()
     {
         return response()->json([
-            'status' => 'success',
+            'success' => true,
             'message' => 'Liste des votes récupérée avec succès',
             'data' => Vote::all(),
         ], 200);
