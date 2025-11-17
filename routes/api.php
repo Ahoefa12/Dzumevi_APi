@@ -1,12 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CandidatsController;
 use App\Http\Controllers\PaiementsController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
 
+Route::get('/', function () {
+    return  'API is working';
+});
 
 // Authentification
 Route::post('/login', [AuthController::class, 'login']);
