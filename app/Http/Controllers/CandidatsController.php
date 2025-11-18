@@ -3,7 +3,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidat;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CandidatsController extends Controller
 {
@@ -24,30 +23,16 @@ class CandidatsController extends Controller
                 'matricule' => 'required|string|unique:candidats',
                 'description' => 'nullable|string',
                 'categorie' => 'required|string',
-                'photo' => 'nullable|image|mimes:jpeg,png,gif,webp|max:2048',
+                'photo' => 'nullable|string', // ou 'image' si tu gères l'upload
                 "vote_id" => 'required|exists:votes,id'
             ]);
-
-            // Gérer l'upload de la photo si présente
-            if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('candidats', 'public');
-                $data['photo'] = $photoPath;
-            }
 
             $candidat = Candidat::create($data);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Candidat enregistré avec succès',
-                'data' => [
-                    'id' => $candidat->id,
-                    'firstname' => $candidat->firstname,
-                    'matricule' => $candidat->matricule,
-                    'description' => $candidat->description,
-                    'categorie' => $candidat->categorie,
-                    'photo_url' => $candidat->photo_url,
-                    'vote_id' => $candidat->vote_id,
-                ],
+                'data' => $candidat,
             ], 201);
 
         } catch (\Throwable $th) {
@@ -85,38 +70,19 @@ class CandidatsController extends Controller
             $data = $request->validate([
                 'firstname' => 'sometimes|string',
                 'lastname' => 'sometimes|string',
-                'matricule' => 'sometimes|string|unique:candidats,matricule,' . $id,
+                'maticule' => 'sometimes|string|unique:candidats,maticule,' . $id,
                 'description' => 'nullable|string',
                 'categorie' => 'sometimes|string',
-                'photo' => 'nullable|image|mimes:jpeg,png,gif,webp|max:2048'
+                'photo' => 'nullable|string'
             ]);
 
             $candidat = Candidat::findOrFail($id);
-
-            // Gérer le remplacement de la photo
-            if ($request->hasFile('photo')) {
-                // Supprimer l'ancienne photo si elle existe
-                if ($candidat->photo && Storage::disk('public')->exists($candidat->photo)) {
-                    Storage::disk('public')->delete($candidat->photo);
-                }
-                $photoPath = $request->file('photo')->store('candidats', 'public');
-                $data['photo'] = $photoPath;
-            }
-
             $candidat->update($data);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Candidat mis à jour avec succès',
-                'data' => [
-                    'id' => $candidat->id,
-                    'firstname' => $candidat->firstname,
-                    'matricule' => $candidat->matricule,
-                    'description' => $candidat->description,
-                    'categorie' => $candidat->categorie,
-                    'photo_url' => $candidat->photo_url,
-                    'vote_id' => $candidat->vote_id,
-                ]
+                'data' => $candidat
             ], 200);
 
         } catch (\Throwable $th) {
