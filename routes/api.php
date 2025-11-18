@@ -6,9 +6,10 @@ use App\Http\Controllers\PaiementsController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return  'API is working';
-});
+// Route::get('/test', function() {
+//     return response()->json(['message' => 'API fonctionne !']);
+// });
+
 
 // Authentification
 Route::post('/login', [AuthController::class, 'login']);
