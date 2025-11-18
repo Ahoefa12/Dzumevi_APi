@@ -115,7 +115,7 @@ class CandidatsController extends Controller
     }
 
 
-    public function candidatsByVote(string $id)
+    public function candidatsByConcours(string $id)
     {
         $candidats = Candidat::where('vote_id', $id)->get();
         return response()->json([
