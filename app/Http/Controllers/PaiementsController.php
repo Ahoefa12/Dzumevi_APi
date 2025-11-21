@@ -37,13 +37,13 @@ class PaiementsController extends Controller
             ]);
 
             /* Configuration FedaPay */
-            FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
-            FedaPay::setEnvironment('live'); // ou setEnvironment('live');
+            FedaPay::setApiKey(env('FEDAPAY_SECRET_KEY')); // ← CLÉ DANS .ENV
+            FedaPay::setEnvironment(env('FEDAPAY_ENVIRONMENT', 'live'));
 
             /* Créer un client */
             $customer = Customer::create([
                 "firstname" => $validated['name'],
-                "lastname" => 'Vote', // Vous pouvez ajuster selon vos besoins
+                "lastname" => 'Vote',
                 "email" => $validated['email'],
                 "phone_number" => [
                     "number" => $validated['phone_number'],
@@ -61,19 +61,19 @@ class PaiementsController extends Controller
                 'customer' => ['id' => $customer->id]
             ]);
 
-            /* Enregistrer dans la table users (assurez-vous que la table et les champs existent) */
+            /* Enregistrer dans la table users */
             $user = User::create([
-                "candidat_id" => $candidatId, // Notez le underscore _id
+                "candidat_id" => $candidatId,
                 "name" => $validated['name'],
                 "email" => $validated['email'],
                 "phone_number" => $validated['phone_number'],
                 "country" => $validated['country'],
                 'description' => $validated['description'],
                 'amount' => $validated['amount'],
-                'currency' => $validated['currency'], // Stocker directement la string
+                'currency' => $validated['currency'],
                 'callback_url' => config('app.callback_url', 'https://example.com/callback'),
                 'mode' => $validated['mode'],
-                'customer_id' => $customer->id, // Notez le underscore _id
+                'customer_id' => $customer->id,
                 'transaction_id' => $transaction->id
             ]);
 
@@ -82,7 +82,7 @@ class PaiementsController extends Controller
                 'transaction_id' => $transaction->id,
                 'customer_id' => $customer->id,
                 'user_id' => $user->id,
-                'payment_url' => $transaction->generateToken(), // Générer l'URL de paiement
+                'payment_url' => $transaction->generateToken(),
                 'message' => 'Paiement initié avec succès'
             ], 201);
         } catch (\Throwable $th) {
@@ -100,8 +100,8 @@ class PaiementsController extends Controller
     public function checkTransaction($transactionId)
     {
         try {
-            FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
-            FedaPay::setEnvironment('live');
+            FedaPay::setApiKey(env('FEDAPAY_SECRET_KEY')); // ← CLÉ DANS .ENV
+            FedaPay::setEnvironment(env('FEDAPAY_ENVIRONMENT', 'live'));
 
             $transaction = Transaction::retrieve($transactionId);
 
@@ -122,6 +122,9 @@ class PaiementsController extends Controller
     public function listTransactions(Request $request)
     {
         try {
+            FedaPay::setApiKey(env('FEDAPAY_SECRET_KEY')); // ← CLÉ DANS .ENV
+            FedaPay::setEnvironment(env('FEDAPAY_ENVIRONMENT', 'live'));
+
             $filters = [];
 
             // Filtre par statut si fourni
