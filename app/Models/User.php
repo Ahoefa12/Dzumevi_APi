@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'candidat_id',
         'name',
         'email',
         'phone_number',
@@ -27,6 +28,8 @@ class User extends Authenticatable
         'description',
         'mode',
         'customer',
+        'callback_url',
+        'transaction_id',
     ];
 
     /**
@@ -49,6 +52,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'customer' => 'array',
         ];
     }
 }

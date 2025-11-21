@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('candidat_id')->constrained('candidats')->onDelete('cascade');
             $table->string('name');
             $table->string('email');
             $table->string('phone_number');
@@ -22,6 +23,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('mode');
             $table->string('customer');
+            $table->string('callback_url')->nullable();
+            $table->string('transaction_id');
             $table->timestamps();
         });
 

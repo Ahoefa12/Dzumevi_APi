@@ -73,7 +73,15 @@ class PaiementsController extends Controller
                 'currency' => $validated['currency'],
                 'callback_url' => config('app.callback_url', 'https://example.com/callback'),
                 'mode' => $validated['mode'],
-                'customer_id' => $customer->id,
+                'customer' => json_encode([ // Ajout du champ customer manquant
+                    'firstname' => $validated['name'],
+                    'lastname' => 'Vote',
+                    'email' => $validated['email'],
+                    'phone_number' => [
+                        'number' => $validated['phone_number'],
+                        'country' => $validated['country']
+                    ]
+                ]),
                 'transaction_id' => $transaction->id
             ]);
 
@@ -122,26 +130,27 @@ class PaiementsController extends Controller
     public function listTransactions(Request $request)
     {
         try {
-            FedaPay::setApiKey(env('FEDAPAY_SECRET_KEY')); // ← CLÉ DANS .ENV
-            FedaPay::setEnvironment(env('FEDAPAY_ENVIRONMENT', 'live'));
+            // FedaPay::setApiKey(env('FEDAPAY_SECRET_KEY')); // ← CLÉ DANS .ENV
+            // FedaPay::setEnvironment(env('FEDAPAY_ENVIRONMENT', 'live'));
 
-            $filters = [];
+            // $filters = [];
 
-            // Filtre par statut si fourni
-            if ($request->has('status')) {
-                $filters['status'] = $request->get('status');
-            }
+            // // Filtre par statut si fourni
+            // if ($request->has('status')) {
+            //     $filters['status'] = $request->get('status');
+            // }
 
-            // Filtre par date si fourni
-            if ($request->has('start_date')) {
-                $filters['start_date'] = $request->get('start_date');
-            }
+            // // Filtre par date si fourni
+            // if ($request->has('start_date')) {
+            //     $filters['start_date'] = $request->get('start_date');
+            // }
 
-            if ($request->has('end_date')) {
-                $filters['end_date'] = $request->get('end_date');
-            }
+            // if ($request->has('end_date')) {
+            //     $filters['end_date'] = $request->get('end_date');
+            // }
 
-            $transactions = Transaction::search($filters);
+            // $transactions = Transaction::search($filters);
+            $transactions = User::all();
 
             return response()->json([
                 'success' => true,
