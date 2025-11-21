@@ -22,6 +22,7 @@ route::middleware('auth:sanctum')->group(function () {
 
 
 
+Route::get('/paiements/list', [PaiementsController::class, 'listTransactions']);
 Route::post('/paiements/{candidatId}', [PaiementsController::class, 'doVote']);
 Route::get('/paiements/status/{transactionId}', [PaiementsController::class, 'checkTransaction']);
 Route::get('candidats', [CandidatsController::class, 'index']);

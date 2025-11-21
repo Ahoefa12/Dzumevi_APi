@@ -85,10 +85,9 @@ class PaiementsController extends Controller
                 'payment_url' => $transaction->generateToken(), // Générer l'URL de paiement
                 'message' => 'Paiement initié avec succès'
             ], 201);
-        
         } catch (\Throwable $th) {
             Log::error('Erreur paiement: ' . $th->getMessage());
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de la transaction',
@@ -102,16 +101,15 @@ class PaiementsController extends Controller
     {
         try {
             FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
-            FedaPay::setEnvironment('sandbox');
+            FedaPay::setEnvironment('live');
 
             $transaction = Transaction::retrieve($transactionId);
-            
+
             return response()->json([
                 'success' => true,
                 'status' => $transaction->status,
                 'data' => $transaction
             ]);
-
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
@@ -119,5 +117,15 @@ class PaiementsController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
+    }
+    public function listTransactions()
+    {
+        FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
+        FedaPay::setEnvironment('live');
+        $listeTransactions = Transaction::all();
+        return response()->json([
+            'success' => true,
+            'transactions' => $listeTransactions
+        ]);
     }
 }
