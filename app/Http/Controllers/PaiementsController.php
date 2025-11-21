@@ -118,14 +118,37 @@ class PaiementsController extends Controller
             ], 500);
         }
     }
-    public function listTransactions()
+
+    public function listTransactions(Request $request)
     {
-        FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
-        FedaPay::setEnvironment('live');
-        $listeTransactions = Transaction::all();
-        return response()->json([
-            'success' => true,
-            'transactions' => $listeTransactions
-        ]);
+        try {
+            $filters = [];
+
+            // Filtre par statut si fourni
+            if ($request->has('status')) {
+                $filters['status'] = $request->get('status');
+            }
+
+            // Filtre par date si fourni
+            if ($request->has('start_date')) {
+                $filters['start_date'] = $request->get('start_date');
+            }
+
+            if ($request->has('end_date')) {
+                $filters['end_date'] = $request->get('end_date');
+            }
+
+            $transactions = Transaction::search($filters);
+
+            return response()->json([
+                'success' => true,
+                'data' => $transactions
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }
