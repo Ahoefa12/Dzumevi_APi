@@ -18,11 +18,11 @@ Route::post('/login', [AuthController::class, 'login']);
 route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('candidats', CandidatsController::class)->except(['index', 'show']);
     Route::apiResource('votes', VoteController::class)->except(['index', 'show']);
+    Route::get('/paiements/list', [PaiementsController::class, 'listTransactions']);
 });
 
 
 
-Route::get('/paiements/list', [PaiementsController::class, 'listTransactions']);
 Route::post('/paiements/{candidatId}', [PaiementsController::class, 'doVote']);
 Route::get('/paiements/status/{transactionId}', [PaiementsController::class, 'checkTransaction']);
 Route::get('candidats', [CandidatsController::class, 'index']);
