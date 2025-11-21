@@ -13,5 +13,7 @@ Route::get('/', function () {
 Route::Post('/paiement', [PaiementsController::class, 'doVote']);
 Route::get('/candidats', [CandidatsController::class, 'index']);
 Route::get('/candidats/{id}', [CandidatsController::class, 'show']);
+
 Route::get('/votes', [VoteController::class, 'index']);
 Route::get('/votes/{id}', [VoteController::class, 'show']);
+

@@ -6,14 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidat_id')->constrained('candidats')->onDelete('cascade');
+            $table->unsignedBigInteger('candidat_id')->nullable();
+            // RETIRER TEMPORAIREMENT la clé étrangère
+            // $table->foreign('candidat_id')
+            //     ->references('id')
+            //     ->on('candidats')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
             $table->string('name');
             $table->string('email');
             $table->string('phone_number');
@@ -28,9 +31,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        
-    
-     Schema::create('sessions', function (Blueprint $table) {
+        Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
@@ -40,13 +41,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('users');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('users');
     }
 };
-
