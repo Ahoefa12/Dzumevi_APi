@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\ConcoursController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CandidatsController;
+use App\Http\Controllers\ConcoursController;
 use App\Http\Controllers\PaiementsController;
 use App\Http\Controllers\VoteController;
-use App\Http\Controllers\AuthController;
-
+use Illuminate\Support\Facades\Route;
 // Route::get('/test', function() {
 //     return response()->json(['message' => 'API fonctionne !']);
 // });
@@ -60,6 +59,10 @@ Route::prefix('concours')->group(function () {
     Route::get('/{concours}/candidats', [ConcoursController::class, 'candidats']);
     Route::patch('/{concours}/stats', [ConcoursController::class, 'updateStats']);
 });
+
+Route::apiResource('concours', ConcoursController::class);
+Route::get('concours/{concours}/candidats', [ConcoursController::class, 'candidats']);
+Route::post('concours/{concours}/update-stats', [ConcoursController::class, 'updateStats']);
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();

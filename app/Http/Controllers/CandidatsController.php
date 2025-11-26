@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Candidat;
@@ -25,7 +26,7 @@ class CandidatsController extends Controller
                 'description' => 'nullable|string',
                 'categorie' => 'required|string',
                 'photo' => 'nullable|image|mimes:jpeg,png,gif,webp|max:2048',
-                "vote_id" => 'required|exists:votes,id'
+                "vote_id" => 'sometimes'
             ]);
 
             // Gérer l'upload de la photo si présente
@@ -159,3 +160,4 @@ class CandidatsController extends Controller
         ], 200);
     }
 }
+
