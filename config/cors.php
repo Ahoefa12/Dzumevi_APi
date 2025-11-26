@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'dzumevi_api/*'],
+    'paths' => ['api/*', 'storage/*', '*'],
 
     'allowed_methods' => ['*'],
 

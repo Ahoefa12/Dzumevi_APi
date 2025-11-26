@@ -1,21 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Vote;
 use Illuminate\Http\Request;
 use App\Enums\VoteStatus;
+use App\Http\Traits\ApiResponse;
 use Illuminate\Validation\Rule;
 
 class VoteController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Liste des votes récupérée avec succès',
-            'data' => Vote::all(),
-        ], 200);
+        
+       try {
+            $candidates = Vote::all();
+            return $this->success($candidates, 'Candidats récupérés avec succès');
+        } catch (\Exception $e) {
+            return $this->error('Erreur lors de la récupération des candidats', 500);
+        }
     }
 
     public function store(Request $request)

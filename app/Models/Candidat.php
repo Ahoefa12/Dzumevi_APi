@@ -24,4 +24,8 @@ class Candidat extends Model
     {
         return $this->belongsTo(Vote::class);
     }
+     public function concours(): BelongsTo
+    {
+        return $this->belongsTo(Concours::class);
+    }
 }

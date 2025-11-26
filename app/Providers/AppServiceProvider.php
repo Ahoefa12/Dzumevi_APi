@@ -21,4 +21,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
+
+    protected function jsonResponse(array $data, int $status = 200)
+    {
+        return response()->json($data, $status, [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
 }
