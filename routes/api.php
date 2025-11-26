@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConcoursController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CandidatsController;
 use App\Http\Controllers\PaiementsController;
@@ -47,10 +48,18 @@ Route::post('/payment/webhook', [PaiementsController::class, 'handleWebhook'])
     ->name('payment.webhook');
 Route::get('candidats', [CandidatsController::class, 'index']);
 Route::get('candidats/{id}', [CandidatsController::class, 'show']);
-Route::get('concours', [VoteController::class, 'index']);
-Route::get('concours/{id}', [VoteController::class, 'show']);
-Route::get('concours/{id}/candidats', [CandidatsController::class, 'candidatsByConcours']);
+// Route::get('concours', [VoteController::class, 'index']);
+// Route::get('concours/{id}', [VoteController::class, 'show']);
+// Route::get('concours/{id}/candidats', [CandidatsController::class, 'candidatsByConcours']);
 
+
+Route::prefix('concours')->group(function () {
+    Route::get('/', [ConcoursController::class, 'index']);
+    Route::get('/actifs', [ConcoursController::class, 'actifs']);
+    Route::get('/{concours}', [ConcoursController::class, 'show']);
+    Route::get('/{concours}/candidats', [ConcoursController::class, 'candidats']);
+    Route::patch('/{concours}/stats', [ConcoursController::class, 'updateStats']);
+});
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
