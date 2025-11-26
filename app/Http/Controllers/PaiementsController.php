@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Candidat;
 use App\Models\User;
 use FedaPay\Customer;
 use FedaPay\FedaPay;
 use FedaPay\Transaction;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class PaiementsController extends Controller
 {
-
-    public function doVote(Request $request)
+    public function doVote(Request $request, $candidatId)
     {
         try {
+            // Valider que le candidat existe
+            $candidat = Candidat::where('id', $candidatId)->first();
+            if (!$candidat) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Candidat non trouvé'
+                ], 404);
+            }
+
             // Validation des données de la requête
             $validated = $request->validate([
                 'name' => 'required|string|max:100',
@@ -24,18 +33,17 @@ class PaiementsController extends Controller
                 'amount' => 'required|numeric|min:100',
                 'currency' => 'required|string|size:3',
                 'description' => 'required|string|max:255',
-                'mode' => 'required|in:mtn_open,mtn_express,moov,airtel'
+                'mode' => 'required|string'
             ]);
 
-            /* Remplacez YOUR_SECRETE_API_KEY par votre clé API secrète */
-            FedaPay::setApiKey("pk_live_5OlVf7A_l9Hnz1IXPULt3QWZ");
-            /* Indiquez si vous souhaitez exécuter votre requête en mode test ou en live */
-            FedaPay::setEnvironment('sandbox'); //or setEnvironment('live');
+            /* Configuration FedaPay */
+            FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
+            FedaPay::setEnvironment('live'); // ou setEnvironment('live');
 
             /* Créer un client */
             $customer = Customer::create([
-                "firstname" => 'firstname',
-                "lastname" => $validated['name'],
+                "firstname" => $validated['name'],
+                "lastname" => 'Vote', // Vous pouvez ajuster selon vos besoins
                 "email" => $validated['email'],
                 "phone_number" => [
                     "number" => $validated['phone_number'],
@@ -53,29 +61,61 @@ class PaiementsController extends Controller
                 'customer' => ['id' => $customer->id]
             ]);
 
-            $trace = User::create(["firstname" => 'firstname',
+            /* Enregistrer dans la table users (assurez-vous que la table et les champs existent) */
+            $user = User::create([
+                "candidat_id" => $candidatId, // Notez le underscore _id
                 "name" => $validated['name'],
                 "email" => $validated['email'],
                 "phone_number" => $validated['phone_number'],
                 "country" => $validated['country'],
                 'description' => $validated['description'],
                 'amount' => $validated['amount'],
-                'currency' => ['iso' => $validated['currency']],
+                'currency' => $validated['currency'], // Stocker directement la string
                 'callback_url' => config('app.callback_url', 'https://example.com/callback'),
                 'mode' => $validated['mode'],
-                'customer' => $customer->id
+                'customer_id' => $customer->id, // Notez le underscore _id
+                'transaction_id' => $transaction->id
             ]);
 
             return response()->json([
                 'success' => true,
                 'transaction_id' => $transaction->id,
+                'customer_id' => $customer->id,
+                'user_id' => $user->id,
+                'payment_url' => $transaction->generateToken(), // Générer l'URL de paiement
                 'message' => 'Paiement initié avec succès'
             ], 201);
         
         } catch (\Throwable $th) {
+            Log::error('Erreur paiement: ' . $th->getMessage());
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Erreur lors de la transaction',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    // Méthode pour vérifier le statut d'une transaction
+    public function checkTransaction($transactionId)
+    {
+        try {
+            FedaPay::setApiKey("sk_live_sePauc0qIOMn4SOnnQdFEB-e");
+            FedaPay::setEnvironment('sandbox');
+
+            $transaction = Transaction::retrieve($transactionId);
+            
+            return response()->json([
+                'success' => true,
+                'status' => $transaction->status,
+                'data' => $transaction
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la vérification',
                 'error' => $th->getMessage()
             ], 500);
         }
